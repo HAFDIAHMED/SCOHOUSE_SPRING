@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+
+
+	<link rel="stylesheet" type="text/css" href="resources/css/items.css"/>
+	
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+	<link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css?family=Days+One" rel="stylesheet"/>
+  <title> Seance Admin </title>
+</h:head>
+
+<h:body>
+
+
+<!-- Debut Body !!! -->
+<ui:include src="nav.xhtml" />
+
+	<p:growl id="messages" showDetail="false"/>
+	
+<h:form>
+
+  <br/>
+  <br/>
+
+    <div align="center">
+          <p:commandButton id="add"  value="Nouveau seance" onclick="PF('additemDialog').show()" icon="ui-icon-pencil" />
+    </div>
+    
+    <br/>
+  <br/>
+
+  <p:dataTable  var="seance" value="#{seanceView.seances}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+  paginator="true"
+  rows="10"  >
+  
+    <p:column headerText="Id" style="text-align: center">
+      <h:outputText value="#{seance.id}" />
+    </p:column>
+    
+    <p:column headerText="Num" style="text-align: center" sortBy="#{seance.num}">
+      <h:outputText value="#{seance.num}" />
+    </p:column>
+
+    <p:column headerText="nom" style="text-align: center" sortBy="#{seance.nom}" >
+      <h:outputText value="#{seance.nom}" />
+    </p:column>
+    
+    <p:column headerText="Niveau" style="text-align: center" sortBy="#{niveauView.nameById(seance.niveau)}">
+      <h:outputText value="#{niveauView.nameById(seance.niveau)}" />
+    </p:column>
+    
+    <p:column headerText="NiveauScolaire" style="text-align: center" sortBy="#{niveauScolaireView.nameById(seance.niveauScolaire)}">
+      <h:outputText value="#{niveauScolaireView.nameById(seance.niveauScolaire)}" />
+    </p:column>
+    
+    <p:column headerText="Semestre" style="text-align: center" sortBy="#{semestreView.nameById(seance.semestre)}">
+      <h:outputText value="#{semestreView.nameById(seance.semestre)}" />
+    </p:column>
+    
+    <p:column headerText="Matiere" style="text-align: center" sortBy="#{matiereView.nameById(seance.matiere)}">
+      <h:outputText value="#{matiereView.nameById(seance.matiere)}" />
+    </p:column>
+    
+    <p:column headerText="Cour" style="text-align: center" sortBy="#{courView.nameById(seance.cour)}">
+      <h:outputText value="#{courView.nameById(seance.cour)}" />
+    </p:column>
+    
+    <p:column headerText="Description" style="text-align: center">
+    	<p:commandButton id="mdp" update="panel" value="Description" oncomplete="PF('Dialog').show()">
+    		 <f:setPropertyActionListener value="#{seance.description}" target="#{seanceView.selected}" />
+    	</p:commandButton>
+    </p:column>
+    
+    <p:column headerText="Regarder" style="text-align: center">
+    	<p:commandButton value="Regarder"  action="#{DBFView.select()}">
+    		<f:setPropertyActionListener value="#{seance.file}" target="#{DBFView.selected}" />
+    	</p:commandButton>
+    </p:column>
+
+    <p:column headerText="Delete" style="text-align: center">
+    	<p:commandButton id="delete"  value="Delete" onclick="PF('deleteitemDialog').show()" icon="ui-icon-trash">
+	        <f:setPropertyActionListener value="#{seance.id}" target="#{seanceView.selected}" />
+    	</p:commandButton>
+    </p:column>
+
+  </p:dataTable>
+ </h:form>
+  
+
+    
+        <h:form id="additemForm">
+        <!-- Growl component -->
+        <p:growl id="messages" showDetail="false"/>
+        <p:dialog header="Nouveau seance" widgetVar="additemDialog" height="430px" resizable="false">
+            <h:panelGrid columns="2" cellpadding="7">
+                
+                <p:outputLabel for="itemName" value="Nom : " />
+                <p:inputText id="itemName" value="#{seanceView.name}"/>
+                
+                <p:outputLabel for="itemdesc" value="Description : " />
+                <p:inputTextarea id="itemdesc" value="#{seanceView.description}"/>
+                
+                <p:outputLabel  value="Niveau : " />
+                <p:selectOneMenu id="niveau" value="#{seanceView.niveau}" >
+                	<f:selectItem/>
+                	<c:forEach var="niveau" items="#{niveauView.niveaux}">
+                		<f:selectItem itemLabel="#{niveau.nom}" itemValue="#{niveau.id}" />
+					</c:forEach>
+					<p:ajax update="niveauScolaire" />
+		        </p:selectOneMenu>
+                
+                <p:outputLabel  value="Niveau Scolaire : " />
+                <p:selectOneMenu id="niveauScolaire" value="#{seanceView.niveauScolaire}">
+                	<f:selectItem/>
+                	<c:forEach var="niveauScolaire" items="#{niveauScolaireView.niveauxScolaire}">
+                		<c:if test="#{seanceView.niveau.equals(niveauScolaire.niveau)}">
+                			<f:selectItem itemLabel="#{niveauScolaire.nom}" itemValue="#{niveauScolaire.id}" />
+    					</c:if>	
+					</c:forEach>
+					<p:ajax update="semestre" />
+		        </p:selectOneMenu>
+		        
+		        <p:outputLabel  value="Semestre : " />
+                <p:selectOneMenu id="semestre" value="#{seanceView.semestre}">
+                	<f:selectItem/>
+                	<c:forEach var="semestre" items="#{semestreView.semestres}">
+                		<c:if test="#{seanceView.niveauScolaire.equals(semestre.niveauScolaire)}">
+                			<f:selectItem itemLabel="#{semestre.nom}" itemValue="#{semestre.id}" />
+    					</c:if>	
+					</c:forEach>
+					<p:ajax update="matiere" />
+		        </p:selectOneMenu>
+		        
+		        <p:outputLabel  value="Matiere : " />
+                <p:selectOneMenu id="matiere" value="#{seanceView.matiere}">
+                	<f:selectItem/>
+                	<c:forEach var="matiere" items="#{matiereView.matieres}">
+                		<c:if test="#{seanceView.semestre.equals(matiere.semestre)}">
+                			<f:selectItem itemLabel="#{matiere.nom}" itemValue="#{matiere.id}" />
+    					</c:if>	
+					</c:forEach>
+					<p:ajax update="cour" />
+		        </p:selectOneMenu>
+		        
+		        <p:outputLabel  value="Cour : " />
+                <p:selectOneMenu id="cour" value="#{seanceView.cour}">
+                	<f:selectItem/>
+                	<c:forEach var="cour" items="#{courView.cours}">
+                		<c:if test="#{seanceView.matiere.equals(cour.matiere)}">
+                			<f:selectItem itemLabel="#{cour.nom}" itemValue="#{cour.id}" />
+    					</c:if>	
+					</c:forEach>
+		        </p:selectOneMenu>
+		        
+		        <p:outputLabel  value="File : " />
+                <p:selectOneMenu id="file" value="#{seanceView.file}" >
+                	<f:selectItem/>
+                	<c:forEach var="file" items="#{DBFView.dbFs}">
+                		<f:selectItem itemLabel="#{file.fileName}" itemValue="#{file.id}" />
+					</c:forEach>
+		        </p:selectOneMenu>
+                
+                <p:commandButton  value="OK" action="#{seanceView.add()}"  oncomplete="PF('additemDialog').hide()" icon="ui-icon-check"/>
+                <p:commandButton   value="Cancel" onclick="PF('additemDialog').hide()" icon="ui-icon-cancel"/>
+            </h:panelGrid>
+        </p:dialog>
+    </h:form>
+    
+    <h:form>
+      <p:dialog id="deleteItem" header="Supprimer seance" widgetVar="deleteitemDialog" height="50px" resizable="false">
+	  	<p:panelGrid columns="2" columnClasses="label,value">
+	    	<p:commandButton id="confirmDelete" value="OK" action="#{seanceView.delete()}" oncomplete="PF('deleteitemDialog').hide()"  icon="ui-icon-check"/>
+	        <p:commandButton id="cancelDelete" value="Cancel" onclick="PF('deleteitemDialog').hide()" icon="ui-icon-cancel"/>
+	    </p:panelGrid>
+	  </p:dialog>
+    </h:form>
+    
+    <p:dialog id="Item" header="Mot de passe" widgetVar="Dialog"  resizable="true">
+  	<p:panelGrid columns="2" columnClasses="label,value" id="panel">
+    	<h:outputText value="#{seanceView.selected}" />
+        <p:commandButton id="Quiter" value="Quitter" onclick="PF('Dialog').hide()" icon="ui-icon-cancel" />
+    </p:panelGrid>
+  </p:dialog>
+    
+  
+<!-- Fin Body !!! -->
+
+<ui:include src="footer.xhtml" />
+
+
+</h:body>
+</html>

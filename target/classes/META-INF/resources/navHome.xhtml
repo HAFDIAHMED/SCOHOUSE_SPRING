@@ -1,0 +1,70 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
+	
+            <div  class="collapse navbar-collapse offset"  id="navbarSupportedContent" >
+              <ul class="nav navbar-nav menu_nav ml-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="home.xhtml">Accueil</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">A propos</a>
+                </li>
+                
+                <c:forEach var="niveau" items="#{niveauView.niveaux}">
+	                <li class="nav-item submenu dropdown">
+						<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">#{niveau.nom}</a>
+						<ul class="dropdown-menu">
+							<c:forEach var="niveauScolaire" items="#{niveauScolaireView.niveauxScolaire}">
+								<c:if test="#{niveau.id.equals(niveauScolaire.niveau)}">
+									<li class="nav-item">
+										<h:form>
+											<h:commandLink class="nav-link" action="/matiere.xhtml" value="#{niveauScolaire.nom}">
+												<f:setPropertyActionListener value="#{niveauScolaire.id}" target="#{niveauScolaireView.page}" />
+											</h:commandLink>
+			                      		</h:form>	
+		                   			</li>
+    							</c:if>	
+                   			</c:forEach>
+						 </ul>
+					</li>
+          		</c:forEach>
+          		
+          		<c:if test="#{accountView.isLoggedin()}">
+          		
+	          		<c:if test="#{accountView.admin()}">
+		                <li class="nav-item">
+		                  <a class="nav-link" href="upload.xhtml">Espace Admin</a>
+		                </li>
+	                </c:if>
+	                
+	                <c:if test="#{accountView.prof()}">
+		                <li class="nav-item">
+		                  <a class="nav-link" href="upload_prof.xhtml">Espace Professeur</a>
+		                </li>
+	                </c:if>	
+          		
+          			<li class="nav-item">
+	                  <h:form>
+						<h:commandLink class="nav-link" action="#{accountView.logout()}" value="Se déconnecter"></h:commandLink>
+			          </h:form>	
+	                </li>  
+	          		<li class="nav-item">
+	                  <a class="nav-link" href="gestion.xhtml">Bonjour #{accountView.nameById()}</a>
+	                </li>
+   
+                </c:if>	
+                
+                <c:if test="#{!accountView.isLoggedin()}">
+		          	<li class="nav-item">
+	                  <a class="nav-link" href="index.xhtml">Se connecter</a>
+	                </li>
+                </c:if>	
+
+              </ul>
+            </div>
+
+</ui:composition>

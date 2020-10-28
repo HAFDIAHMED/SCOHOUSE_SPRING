@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:p="http://primefaces.org/ui"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+
+	<link rel="stylesheet" type="text/css" href="resources/css/items.css"/>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+	<link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css?family=Days+One" rel="stylesheet"/>
+  <title> Participations Admin </title>
+</h:head>
+
+<h:body>
+
+<!-- Debut Body !!! -->
+
+<ui:include src="nav.xhtml" />
+
+
+
+	<p:growl id="messages" showDetail="false"/>
+
+  <p:dataTable id="availableGnomes" var="part" value="#{partView.getParticipations()}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+  paginator="true"
+  rows="10"  >
+
+    <p:column headerText="Participant" style="text-align: center">
+      <h:outputText value="#{accountView.nameById(part.getIdAccount())}" />
+    </p:column>
+    
+    <p:column headerText="Matiere" style="text-align: center">
+      <h:outputText value="#{matiereView.nameById(part.getIdMatiere())}" />
+    </p:column>
+    
+    <p:column headerText="Valide" style="text-align: center">
+    <h:outputText value="#{part.valid ? 'Oui' : 'Non     '}" />
+    <p:commandButton value="Valider" style="#{!part.valid ? '' : 'display:none'}" onclick="PF('validate').show()">
+    	<f:setPropertyActionListener value="#{part.id}" target="#{partView.part}" />
+	</p:commandButton>
+    </p:column>
+
+  </p:dataTable>
+  
+  <p:dialog id="deleteeeItem" header="Valider account" widgetVar="validate"  resizable="false">
+  	<p:panelGrid columns="2" columnClasses="label,value">
+    	<p:commandButton id="confirmDeleteee" value="OK" action="#{partView.validate()}" oncomplete="PF('deleteitemDialog').hide()"/>
+        <p:commandButton id="cancelDeleteee" value="Cancel" onclick="PF('deleteitemDialog').hide()" icon="ui-icon-cancel"/>
+    </p:panelGrid>
+  </p:dialog>
+
+  
+<!-- Fin Body !!! -->
+
+<ui:include src="footer.xhtml" />
+
+</h:body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="img/favicon.png" type="image/png" />
+    <title>Courses Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/flaticon.css" />
+    <link rel="stylesheet" href="css/themify-icons.css" />
+    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css" />
+    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css" />
+    <!-- main css -->
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+		video {
+			max-width: 100%;
+			height: auto;
+			}
+	</style>
+  </head>
+
+  <body>
+    <!--================ Start Header Menu Area =================-->
+    <header class="header_area white-header">
+      <div class="main_menu">
+        <div class="search_input" id="search_input_box">
+          <div class="container">
+            <form class="d-flex justify-content-between" method="" action="">
+              <input
+                type="text"
+                class="form-control"
+                id="search_input"
+                placeholder="Search Here"
+              />
+              <button type="submit" class="btn"></button>
+              <span
+                class="ti-close"
+                id="close_search"
+                title="Close Search"
+              ></span>
+            </form>
+          </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <a class="navbar-brand" href="index.html">
+              <img class="logo-2" src="img/logo2.png" alt="" />
+            </a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="icon-bar"></span> <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <ui:include src="navHome.xhtml" />
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!--================ End Header Menu Area =================-->
+
+    <!--================Home Banner Area =================-->
+    <section class="banner_area">
+      <div class="banner_inner d-flex align-items-center">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-6">
+              <div class="banner_content text-center">
+                <h2>#{courView.nameById(courView.getPage())}</h2>
+                <div class="page_link">
+                  <a href="home.xhtml">Home</a>
+                  <a>#{niveauView.nameById(niveauScolaireView.niveauById(niveauScolaireView.getPage()))}</a>
+                  <a href="matiere.xhtml">#{niveauScolaireView.nameById(niveauScolaireView.getPage())}</a>
+                  <a>#{semestreView.nameById(matiereView.semestreById(matiereView.getPage()))}</a>
+                  <a href="cour.xhtml">#{matiereView.nameById(matiereView.getPage())}</a>
+                  <a href="seance.xhtml">#{courView.nameById(courView.getPage())}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+
+    <!--================ Start Course Details Area =================-->
+    <section class="course_details_area section_gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 course_details_left">
+	           		<div class="content">
+						<video oncontextmenu="return false;" controls="controls" controlsList="nodownload" width="800">
+							<source src="/downloadFile/#{courView.fileById(courView.seance)}" type="video/mp4"></source>
+						</video>
+					</div>
+                        <div class="content">
+                            <ul class="course_list">            	
+								<li class="justify-content-between d-flex active">			            	         
+						            <h:form>
+										<h:commandLink class="genric-btn primary text-uppercase" action="#{courView.pre()}" value="Video Precedent">													</h:commandLink>
+					    			</h:form>
+					                      	
+					                <h:form>
+										<h:commandLink class="genric-btn primary text-uppercase" action="#{courView.sui()}" value="Video Suivant">													</h:commandLink>
+					            	</h:form>
+								</li>
+
+                            </ul>
+                        </div>	
+                        
+                        
+            <div class="section-top-border">
+				<h3 class="mb-30 title_color">#{seanceView.nameById(courView.seance)}</h3>
+				<div class="row">
+					<div class="col-lg-12">
+						<blockquote class="generic-blockquote">
+							#{seanceView.descById(courView.seance)}
+						</blockquote>
+					</div>
+				</div>
+			</div>
+                        				
+                    <div class="content_wrapper">
+                    
+                        <h4 class="title">Liste des seances :</h4>
+                        <div class="content">
+                            <ul class="course_list">
+                            	<c:forEach var="seance" items="#{seanceView.seances}">
+					            	<c:if test="#{courView.page.equals(seance.cour)}">
+										<li class="justify-content-between d-flex">
+				            	            <p>#{seance.num}-  #{seance.nom}</p>
+						                    <h:form>
+												<h:commandLink class="primary-btn text-uppercase" action="#" value="Voir le cour">
+												<f:setPropertyActionListener value="#{seance.id}" target="#{courView.seance}" />													</h:commandLink>
+					                      	</h:form>
+										</li>
+									</c:if>	
+								</c:forEach>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-4 right-contents">
+                    <ul>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Nom du professeur</p>
+                                <span class="or">#{accountView.nameById(matiereView.profById(matiereView.page))}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Seance</p>
+                                <span>#{seanceView.nameById(courView.seance)}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Avis</p>
+                                <span>#{seanceView.ratting(courView.seance)}</span>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                <h4 class="title">Les avis</h4>
+                <div class="content">
+                    <div class="review-top row pt-40">
+                            <div class="col-lg-12">
+                                <h6 class="mb-15">Donnez votre note</h6>
+                                <div class="d-flex flex-row reviews justify-content-between">
+                                    <span>Quality</span>
+                                    <h:form>
+                                    <div class="star">
+                                    						                    
+										<h:commandLink class="ti-star checked" action="#{seanceView.vote(accountView.getUserID(),courView.seance,1)}"></h:commandLink>
+					                    <h:commandLink class="ti-star checked" action="#{seanceView.vote(accountView.getUserID(),courView.seance,2)}"></h:commandLink>
+					                    <h:commandLink class="ti-star checked" action="#{seanceView.vote(accountView.getUserID(),courView.seance,3)}"></h:commandLink>
+					                    <h:commandLink class="ti-star checked" action="#{seanceView.vote(accountView.getUserID(),courView.seance,4)}"></h:commandLink>
+					                    <h:commandLink class="ti-star checked" action="#{seanceView.vote(accountView.getUserID(),courView.seance,5)}"></h:commandLink>
+                                    </div>
+                                    </h:form>
+                                    <span>Satisfaisant</span>
+                                      
+                                </div>  
+                                                            
+                            </div>
+                        </div>
+                    </div>
+                    
+                                      
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================ End Course Details Area =================-->
+
+    <!--================ Start footer Area  =================-->
+    <ui:include src="foot.xhtml" />
+          <!--================ End footer Area  =================-->
+      
+          <!-- Optional JavaScript -->
+          <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+          <script src="js/jquery-3.2.1.min.js"></script>
+          <script src="js/popper.js"></script>
+          <script src="js/bootstrap.min.js"></script>
+          <script src="vendors/nice-select/js/jquery.nice-select.min.js"></script>
+          <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+          <script src="js/owl-carousel-thumb.min.js"></script>
+          <script src="js/jquery.ajaxchimp.min.js"></script>
+          <script src="js/mail-script.js"></script>
+          <!--gmaps Js-->
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+          <script src="js/gmaps.min.js"></script>
+          <script src="js/theme.js"></script>
+        </body>
+      </html>

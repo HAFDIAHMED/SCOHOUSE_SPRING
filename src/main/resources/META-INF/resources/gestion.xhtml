@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+  <h:head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="img/favicon.png" type="image/png" />
+    <title>Elements</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/flaticon.css" />
+    <link rel="stylesheet" href="css/themify-icons.css" />
+    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css" />
+    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css" />
+    <!-- main css -->
+    <link rel="stylesheet" href="css/style.css" />
+  </h:head>
+
+  <body>
+    <!--================ Start Header Menu Area =================-->
+    <header class="header_area white-header">
+      <div class="main_menu">
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <a class="navbar-brand" href="index.html">
+              <img class="logo-2" src="img/logo2.png" alt="" />
+            </a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="icon-bar"></span> <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <ui:include src="navHome.xhtml" />
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!--================ End Header Menu Area =================-->
+
+    <!--================Home Banner Area =================-->
+    <section class="banner_area">
+      <div class="banner_inner d-flex align-items-center">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-6">
+              <div class="banner_content text-center">
+                <h2>Gestion du Compte</h2>
+                <div class="page_link">
+                  <a href="home.xhtml">Home</a>
+                  <a href="#">Gestion de compte</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+
+
+
+	<!-- End Sample Area -->
+	<!-- Start Button -->
+
+	<!-- End Button -->
+	<!-- Start Align Area -->
+	<div class="whole-wrap">
+		<div class="container">		
+			<div class="section-top-border">
+				<div class="row">
+					<div class="col-lg-12 col-md-8">
+						<h3 class="mb-30 title_color">Form Element</h3>
+						<h:form action="#">
+							<div class="mt-10">
+								<h5 class="mb-30 title_color">Nom :</h5>
+								<p:inputText type="text" name="first_naaame" placeholder="Nom : #{accountView.account.nom}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Nom : #{accountView.account.nom}'"
+								  class="single-input" value = "#{accountView.nom}"/><br/>
+							</div>
+							<div class="mt-10">
+							<h5 class="mb-30 title_color">Prenom :</h5>
+								<p:inputText type="text" name="last_name" placeholder="Prenom : #{accountView.account.prenom}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Prenom : #{accountView.account.prenom}'"
+								  class="single-input" value = "#{accountView.prenom}"/><br/>
+							</div>
+							<div class="mt-10">
+							<h5 class="mb-30 title_color">Email :</h5>
+								<p:inputText type="text" name="first_naaame" placeholder="Email : #{accountView.account.email}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email : #{accountView.account.email}'"
+								 class="single-input" value = "#{accountView.email}"/><br/>
+							</div>
+							<div class="mt-10">
+								<h5 class="mb-30 title_color">Telephone :</h5>
+								<p:inputText type="text" name="last_name" placeholder="Phone : #{accountView.account.phone}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone : #{accountView.account.phone}'"
+								 class="single-input" value = "#{accountView.phone}"/><br/>
+							</div>
+							<div class="mt-10">
+								<h5 class="mb-30 title_color">Nouveau mot de passe :</h5>
+								<p:inputText type="password" name="first_naaame" placeholder="Nouveau Mot de passe" onfocus="this.placeholder = ''" onblur="Mot de passe"
+								 class="single-input" value = "#{accountView.password}"/><br/>
+							</div>
+							<div class="mt-10">
+								<h5 class="mb-30 title_color">Retaper Nouveau Mot de passe :</h5>
+								<p:inputText type="password" name="last_name" placeholder="Retaper Nouveau Mot de passe" onfocus="this.placeholder = ''" onblur="Retaper Nouveau Mot de passe"
+								 class="single-input" value = "#{accountView.repassword}"/> <br/>
+							</div>
+							
+						
+							<div class="button-group-area text-right">
+								<a></a>
+								<h:commandLink class="genric-btn primary " action="#{accountView.editAccount()}" value="Valider"></h:commandLink>
+								<h:commandLink class="genric-btn primary " action="/home.xhtml" value="Annuler"></h:commandLink>
+							</div>
+						</h:form>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End Align Area -->
+
+	<!--================ Start footer Area  =================-->
+	<ui:include src="foot.xhtml" />
+		  <!--================ End footer Area  =================-->
+	  
+		  <!-- Optional JavaScript -->
+		  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		  <script src="js/jquery-3.2.1.min.js"></script>
+		  <script src="js/popper.js"></script>
+		  <script src="js/bootstrap.min.js"></script>
+		  <script src="vendors/nice-select/js/jquery.nice-select.min.js"></script>
+		  <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+		  <script src="js/owl-carousel-thumb.min.js"></script>
+		  <script src="js/jquery.ajaxchimp.min.js"></script>
+		  <script src="js/mail-script.js"></script>
+		  <!--gmaps Js-->
+		  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+		  <script src="js/gmaps.min.js"></script>
+		  <script src="js/theme.js"></script>
+		</body>
+	  </html>

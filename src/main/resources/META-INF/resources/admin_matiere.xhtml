@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+
+
+	<link rel="stylesheet" type="text/css" href="resources/css/items.css"/>
+	
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+	<link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css?family=Days+One" rel="stylesheet"/>
+  <title> Matieres Admin </title>
+</h:head>
+
+<h:body>
+
+
+<!-- Debut Body !!! -->
+<ui:include src="nav.xhtml" />
+
+	<p:growl id="messages" showDetail="false"/>
+	
+	<br/><br/>
+
+    <div align="center">
+          <p:commandButton id="add"  value="Nouveau Matiere" onclick="PF('additemDialog').show()" icon="ui-icon-pencil" />
+    </div>
+    
+	<br/><br/>
+	
+<h:form>
+
+  <p:dataTable  var="matiere" value="#{matiereView.matieres}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+  paginator="true"
+  rows="10"  >
+
+    <p:column headerText="Nom" style="text-align: center" >
+      <h:outputText value="#{matiere.nom}" />
+    </p:column>
+    
+    <p:column headerText="Niveau" style="text-align: center" >
+      <h:outputText value="#{niveauView.nameById(matiere.niveau)}" />
+    </p:column>
+    
+    <p:column headerText="NiveauScolaire" style="text-align: center">
+      <h:outputText value="#{niveauScolaireView.nameById(matiere.niveauScolaire)}" />
+    </p:column>
+    
+    <p:column headerText="Semestre" style="text-align: center">
+      <h:outputText value="#{semestreView.nameById(matiere.semestre)}" />
+    </p:column>
+    
+    <p:column headerText="Professeur" style="text-align: center">
+      <h:outputText value="#{accountView.nameById(matiere.prof)}" />
+    </p:column>
+    
+    <p:column headerText="Prix" style="text-align: center" >
+      <h:outputText value="#{matiere.prix} DH" />
+    </p:column>
+    
+    <p:column headerText="Image" style="text-align: center" >
+    	<h:graphicImage value="/downloadFile/#{matiere.image}" width="150" height="150"/>
+	    <p:commandButton value="Changer" onclick="PF('validate').show()">
+	    	<f:setPropertyActionListener value="#{matiere.id}" target="#{matiereView.selected}" />
+		</p:commandButton>
+	</p:column>
+
+    <p:column headerText="Delete" style="text-align: center">
+    	<p:commandButton id="delete"  value="Delete" onclick="PF('deleteitemDialog').show()" icon="ui-icon-trash">
+	        <f:setPropertyActionListener value="#{matiere.id}" target="#{matiereView.selected}" />
+    	</p:commandButton>
+    </p:column>
+
+  </p:dataTable>
+ </h:form>
+ 
+ <p:dialog id="deleteeeItem" header="Valider account" widgetVar="validate"  resizable="false">
+ <h:form>
+  	<p:panelGrid columns="2" columnClasses="label,value">
+  	
+  		<p:outputLabel  value="changer image : " />
+        <p:selectOneMenu id="file" value="#{matiereView.image}" >
+        	<f:selectItem/>
+        	<c:forEach var="file" items="#{DBFView.dbFs}">
+            	<c:if test="#{file.fileType.contains('image')}">
+                	<f:selectItem itemLabel="#{file.fileName}" itemValue="#{file.id}" />
+            	</c:if>
+			</c:forEach>
+		</p:selectOneMenu>
+		        
+    	<p:commandButton id="confirmDeleteee" value="OK" action="#{matiereView.image()}" oncomplete="PF('deleteitemDialog').hide()"/>
+        <p:commandButton id="cancelDeleteee" value="Cancel" onclick="PF('deleteitemDialog').hide()" icon="ui-icon-cancel"/>
+    </p:panelGrid>
+    </h:form>
+  </p:dialog>
+  
+
+    
+        <h:form id="additemForm">
+        <!-- Growl component -->
+        <p:growl id="messages" showDetail="false"/>
+        <p:dialog header="Nouveau Matiere" widgetVar="additemDialog" height="430px" resizable="false">
+            <h:panelGrid columns="2" cellpadding="7">
+                
+                <p:outputLabel for="itemName" value="Nom : " />
+                <p:inputText id="itemName" value="#{matiereView.name}"/>
+                
+                <p:outputLabel  value="Niveau : " />
+                <p:selectOneMenu id="niveau" value="#{matiereView.niveau}" >
+                	<f:selectItem/>
+                	<c:forEach var="niveau" items="#{niveauView.niveaux}">
+                		<f:selectItem itemLabel="#{niveau.nom}" itemValue="#{niveau.id}" />
+					</c:forEach>
+					<p:ajax update="niveauScolaire" />
+		        </p:selectOneMenu>
+                
+                <p:outputLabel  value="Niveau Scolaire : " />
+                <p:selectOneMenu id="niveauScolaire" value="#{matiereView.niveauScolaire}">
+                	<f:selectItem/>
+                	<c:forEach var="niveauScolaire" items="#{niveauScolaireView.niveauxScolaire}">
+                		<c:if test="#{matiereView.niveau.equals(niveauScolaire.niveau)}">
+                			<f:selectItem itemLabel="#{niveauScolaire.nom}" itemValue="#{niveauScolaire.id}" />
+    					</c:if>	
+					</c:forEach>
+					<p:ajax update="semestre" />
+		        </p:selectOneMenu>
+		        
+		        <p:outputLabel  value="Semestre : " />
+                <p:selectOneMenu id="semestre" value="#{matiereView.semestre}">
+                	<f:selectItem/>
+                	<c:forEach var="semestre" items="#{semestreView.semestres}">
+                		<c:if test="#{matiereView.niveauScolaire.equals(semestre.niveauScolaire)}">
+                			<f:selectItem itemLabel="#{semestre.nom}" itemValue="#{semestre.id}" />
+    					</c:if>	
+					</c:forEach>
+		        </p:selectOneMenu>
+		        
+		        <p:outputLabel  value="Professeur : " />
+                <p:selectOneMenu id="account" value="#{matiereView.prof}">
+                	<f:selectItem/>
+                	<c:forEach var="account" items="#{accountView.accounts}">
+                		<c:if test="#{account.type.equals('professeur')}">
+                			<f:selectItem itemLabel="#{account.nom} #{account.prenom}" itemValue="#{account.id}" />
+    					</c:if>	
+					</c:forEach>
+		        </p:selectOneMenu>
+		        
+		        <p:outputLabel for="itemPrix" value="Prix : " />
+                <p:inputText id="itemPrix" value="#{matiereView.prix}"/>
+                
+                <p:commandButton  value="OK" action="#{matiereView.add()}"  oncomplete="PF('additemDialog').hide()" icon="ui-icon-check"/>
+                <p:commandButton   value="Cancel" onclick="PF('additemDialog').hide()" icon="ui-icon-cancel"/>
+            </h:panelGrid>
+        </p:dialog>
+    </h:form>
+    
+    <h:form>
+      <p:dialog id="deleteItem" header="Supprimer Matiere" widgetVar="deleteitemDialog" height="50px" resizable="false">
+	  	<p:panelGrid columns="2" columnClasses="label,value">
+	    	<p:commandButton id="confirmDelete" value="OK" action="#{matiereView.delete()}" oncomplete="PF('deleteitemDialog').hide()"  icon="ui-icon-check"/>
+	        <p:commandButton id="cancelDelete" value="Cancel" onclick="PF('deleteitemDialog').hide()" icon="ui-icon-cancel"/>
+	    </p:panelGrid>
+	  </p:dialog>
+    </h:form>
+    
+
+  
+<!-- Fin Body !!! -->
+
+<ui:include src="footer.xhtml" />
+
+
+</h:body>
+</html>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:p="http://primefaces.org/ui"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+
+	<link rel="stylesheet" type="text/css" href="resources/css/items.css"/>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+	<link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css?family=Days+One" rel="stylesheet"/>
+  <title> Accounts Admin </title>
+</h:head>
+
+<h:body>
+
+<!-- Debut Body !!! -->
+
+<ui:include src="nav.xhtml" />
+
+<br/><br/>
+
+    <div align="center">
+          <p:commandButton id="add"  value="Nouveau Account" onclick="PF('additemDialog').show()" icon="ui-icon-pencil" />
+    </div>
+    
+	<br/><br/>
+
+
+	<p:growl id="messages" showDetail="false"/>
+
+  <p:dataTable id="availableGnomes" var="account" value="#{accountView.getAccounts()}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+  paginator="true"
+  rows="10"  >
+
+    <p:column headerText="Nom" style="text-align: center">
+      <h:outputText value="#{account.nom}" />
+    </p:column>
+    
+    <p:column headerText="Prenom" style="text-align: center">
+      <h:outputText value="#{account.prenom}" />
+    </p:column>
+    
+    <p:column headerText="Email" style="text-align: center">
+      <h:outputText value="#{account.email}" />
+    </p:column>
+    
+    <p:column headerText="Telephone" style="text-align: center">
+      <h:outputText value="#{account.phone}" />
+    </p:column>
+    
+    <p:column headerText="Profession" style="text-align: center">
+      <h:outputText value="#{account.type}" />
+    </p:column>
+    
+    <p:column headerText="Valide" style="text-align: center">
+    <h:outputText value="#{account.valid ? 'Oui' : 'Non     '}" />
+    <p:commandButton value="Valider" style="#{!account.valid ? '' : 'display:none'}" onclick="PF('validate').show()">
+    	<f:setPropertyActionListener value="#{account.id}" target="#{accountView.selected}" />
+	</p:commandButton>
+    </p:column>
+    
+    <p:column headerText="Mot de passe" style="text-align: center">
+    	<p:commandButton id="mdp" update="panel" value="Voir MDP" oncomplete="PF('Dialog').show()">
+    		<f:setPropertyActionListener value="#{account.password}" target="#{accountView.selected}" />
+    	</p:commandButton>
+    </p:column>
+    
+    <p:column headerText="Avatar" style="text-align: center" >
+	    	<h:graphicImage value="#{account.type.equals('professeur') ?'/downloadFile/' : 'img/avatar.png'}#{account.type.equals('professeur') ? account.avatar : ''}" width="150" height="150"/>
+		    <p:commandButton value="Changer" onclick="PF('avatar').show()">
+		    	<f:setPropertyActionListener value="#{account.id}" target="#{accountView.selected}" />
+			</p:commandButton>
+	</p:column>
+
+    <p:column headerText="Delete" style="text-align: center">
+    	<p:commandButton id="delete"  value="Delete" onclick="PF('deleteitemDialog').show()" icon="ui-icon-trash">
+    		<f:setPropertyActionListener value="#{account.id}" target="#{accountView.selected}" />
+    	</p:commandButton>
+    </p:column>
+    
+    <p:column headerText="Editer" style="text-align: center">
+    	<p:commandButton id="edit"  value="Edit" onclick="PF('edit').show()">
+    		<f:setPropertyActionListener value="#{account.id}" target="#{accountView.selected}" />
+    	</p:commandButton>
+    </p:column>
+
+  </p:dataTable>
+  
+
+  
+  <p:dialog id="deleteItem" header="Supprimer account" widgetVar="deleteitemDialog"  resizable="false">
+  	<p:panelGrid columns="2" columnClasses="label,value">
+    	<p:commandButton id="confirmDelete" value="OK" action="#{accountView.delete()}" oncomplete="PF('deleteitemDialog').hide()"  icon="ui-icon-check"/>
+        <p:commandButton id="cancelDelete" value="Cancel" onclick="PF('deleteitemDialog').hide()" icon="ui-icon-cancel"/>
+    </p:panelGrid>
+  </p:dialog>
+  
+  <p:dialog id="deleteeeItem" header="Valider account" widgetVar="validate"  resizable="false">
+  	<p:panelGrid columns="2" columnClasses="label,value">
+    	<p:commandButton id="confirmDeleteee" value="OK" action="#{accountView.validate()}" oncomplete="PF('deleteitemDialog').hide()"/>
+        <p:commandButton id="cancelDeleteee" value="Cancel" onclick="PF('deleteitemDialog').hide()" icon="ui-icon-cancel"/>
+    </p:panelGrid>
+  </p:dialog>
+  
+    <p:dialog id="Item" header="Mot de passe" widgetVar="Dialog"  resizable="false">
+  	<p:panelGrid columns="2" columnClasses="label,value" id="panel">
+    	<h:outputText value="#{accountView.selected}" />
+        <p:commandButton id="Quiter" value="Quitter" onclick="PF('Dialog').hide()" icon="ui-icon-cancel"/>
+    </p:panelGrid>
+  </p:dialog>
+  
+    <h:form id="additemForm">
+    <!-- Growl component -->
+        <p:growl id="messages" showDetail="false"/>
+        <p:dialog header="Nouveau Compte" widgetVar="additemDialog" height="430px" resizable="false">
+            <h:panelGrid columns="2" cellpadding="7">
+            	<p:outputLabel for="itemName" value="Nom : " />
+            	<p:inputText id="itemName" value="#{accountView.nom}"/>
+            	
+            	<p:outputLabel for="itemPrenom" value="Prenom : " />
+            	<p:inputText id="itemPrenom" value="#{accountView.prenom}"/>
+            	
+            	<p:outputLabel for="itemEmail" value="Email : " />
+            	<p:inputText id="itemEmail" value="#{accountView.email}"/>
+            	
+            	<p:outputLabel for="itemPhone" value="Phone : " />
+            	<p:inputText id="itemPhone" value="#{accountView.phone}"/>
+            	
+            	<p:outputLabel for="itemPassword" value="Password : " />
+            	<p:inputText id="itemPassword" value="#{accountView.password}"/>
+                
+                <p:outputLabel  value="Niveau : " />
+                <p:selectOneMenu id="niveau" value="#{accountView.type}" >
+                	<f:selectItem itemLabel="Etudiant" itemValue="etudiant" />
+                	<f:selectItem itemLabel="Professeur" itemValue="professeur" />
+                	<f:selectItem itemLabel="Administrateur" itemValue="admin" />
+		        </p:selectOneMenu>
+                
+      
+                
+                <p:commandButton  value="OK" action="#{accountView.add()}"  oncomplete="PF('additemDialog').hide()" icon="ui-icon-check"/>
+                <p:commandButton   value="Cancel" onclick="PF('additemDialog').hide()" icon="ui-icon-cancel"/>
+            </h:panelGrid>
+        </p:dialog>
+    </h:form>
+    
+    <h:form id="addditemForm">
+    <!-- Growl component -->
+        <p:growl id="messages" showDetail="false"/>
+        <p:dialog header="Editer Compte" widgetVar="edit" height="430px" resizable="false">
+            <h:panelGrid columns="2" cellpadding="7">
+            	<p:outputLabel for="itemName" value="Nom : " />
+            	<p:inputText id="itemName" value="#{accountView.nom}"/>
+            	
+            	<p:outputLabel for="itemPrenom" value="Prenom : " />
+            	<p:inputText id="itemPrenom" value="#{accountView.prenom}"/>
+            	
+            	<p:outputLabel for="itemEmail" value="Email : " />
+            	<p:inputText id="itemEmail" value="#{accountView.email}"/>
+            	
+            	<p:outputLabel for="itemPhone" value="Phone : " />
+            	<p:inputText id="itemPhone" value="#{accountView.phone}"/>
+            	
+            	<p:outputLabel for="itemPassword" value="Password : " />
+            	<p:inputText id="itemPassword" value="#{accountView.password}"/>
+                
+                <p:outputLabel  value="Niveau : " />
+                <p:selectOneMenu id="niveau" value="#{accountView.type}" >
+                	<f:selectItem itemLabel="" itemValue="" />
+                	<f:selectItem itemLabel="Etudiant" itemValue="etudiant" />
+                	<f:selectItem itemLabel="Professeur" itemValue="professeur" />
+                	<f:selectItem itemLabel="Administrateur" itemValue="admin" />
+		        </p:selectOneMenu>
+                
+      
+                
+                <p:commandButton  value="OK" action="#{accountView.edit()}"  oncomplete="PF('additemDialog').hide()" icon="ui-icon-check"/>
+                <p:commandButton   value="Cancel" onclick="PF('additemDialog').hide()" icon="ui-icon-cancel"/>
+            </h:panelGrid>
+        </p:dialog>
+    </h:form>
+    
+	<p:dialog id="avatar" header="Valider account" widgetVar="avatar"  resizable="false">
+	<h:form>
+	  	<p:panelGrid columns="2" columnClasses="label,value">
+	  	
+	  		<p:outputLabel  value="changer image : " />
+	        <p:selectOneMenu id="file" value="#{accountView.avatar}" >
+	        	<f:selectItem/>
+	        	<c:forEach var="file" items="#{DBFView.dbFs}">
+	            	<c:if test="#{file.fileType.contains('image')}">
+	                	<f:selectItem itemLabel="#{file.fileName}" itemValue="#{file.id}" />
+	            	</c:if>
+				</c:forEach>
+			</p:selectOneMenu>
+			        
+	    	<p:commandButton id="confirmDeleteee" value="OK" action="#{accountView.avatar()}" oncomplete="PF('avatar').hide()"/>
+	        <p:commandButton id="cancelDeleteee" value="Cancel" onclick="PF('avatar').hide()" icon="ui-icon-cancel"/>
+	    </p:panelGrid>
+    </h:form>
+  </p:dialog>
+
+  
+<!-- Fin Body !!! -->
+
+<ui:include src="footer.xhtml" />
+
+</h:body>
+</html>

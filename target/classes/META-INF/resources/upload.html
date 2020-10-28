@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+        <title>Spring Boot File Upload / Download Rest API Example</title>
+        <link rel="stylesheet" href="resources/css/main.css" />
+        
+    </head>
+    <body>
+        <noscript>
+            <h2>Sorry! Your browser doesn't support Javascript</h2>
+        </noscript>
+        <div class="upload-container">
+        
+            <div class="upload-content">
+                <div class="single-upload">
+                    <h3>Upload Single File</h3>
+                    <form id="singleUploadForm" name="singleUploadForm">
+                        <input id="singleFileUploadInput" type="file" name="file" class="file-input" required="required" />
+                        <button type="submit" class="primary submit-btn">Submit</button>
+                    </form>
+                    <div class="upload-response">
+                        <div id="singleFileUploadError"></div>
+                        <div id="singleFileUploadSuccess"></div>
+                    </div>
+                </div>
+                <form action="/upload.xhtml"  >
+				    <input type="submit" value="Go to See uploads" class="primary submit-btn" style="width:100%; height:100%;" />
+				</form>
+
+
+            </div>
+        </div>
+        <script src="resources/js/main.js" ></script>
+    </body>
+</html>

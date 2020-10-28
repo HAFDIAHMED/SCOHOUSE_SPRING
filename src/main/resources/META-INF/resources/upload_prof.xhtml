@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  
+  xmlns:p="http://primefaces.org/ui">
+  
+
+<h:head>
+
+	 <title> Home </title>
+</h:head>
+
+<h:body>
+
+
+<!-- Debut Body !!! -->
+<ui:include src="nav_prof.xhtml" />
+
+<p:growl id="messages" showDetail="true" />
+
+<h:form style="text-align: center"> 
+ <br/>
+ <br/>   
+
+
+<p:commandButton  value="Upload File" action="#{DBFView.upload()}" />
+ <br/>
+</h:form> 
+
+ <br/>
+
+ <br/>
+ 
+ 
+  <p:dataTable id="availableGnomes" var="dbf" value="#{DBFView.prof()}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+  paginator="true"
+  rows="10"  >
+
+    <p:column headerText="Name" style="text-align: center">
+      <h:outputText value="#{dbf.fileName}" />
+    </p:column>
+    
+    <p:column headerText="Type" style="text-align: center">
+      <h:outputText value="#{dbf.fileType}" />
+    </p:column>
+    
+    <p:column headerText="Delete" style="text-align: center">
+    	<p:commandButton id="delete"  value="Delete" onclick="PF('deleteitemDialog').show()" icon="ui-icon-trash">
+	        <f:setPropertyActionListener value="#{dbf.id}" target="#{DBFView.selected}" />
+    	</p:commandButton>
+    </p:column>
+    
+    <p:column headerText="Regarder" style="text-align: center">
+    	<p:commandButton value="Regarder" style="#{dbf.fileType.contains('video') ? '' : 'display:none'}" action="#{DBFView.select()}">
+    		<f:setPropertyActionListener value="#{dbf.id}" target="#{DBFView.selected}" />
+    	</p:commandButton>
+    </p:column>
+
+  </p:dataTable>
+  
+  <h:form>
+      <p:dialog id="deleteItem" header="Supprimer seance" widgetVar="deleteitemDialog" height="50px" resizable="false">
+	  	<p:panelGrid columns="2" columnClasses="label,value">
+	    	<p:commandButton id="confirmDelete" value="OK" action="#{DBFView.delete()}" oncomplete="PF('deleteitemDialog').hide()"  icon="ui-icon-check"/>
+	        <p:commandButton id="cancelDelete" value="Cancel" onclick="PF('deleteitemDialog').hide()" icon="ui-icon-cancel"/>
+	    </p:panelGrid>
+	  </p:dialog>
+    </h:form>
+  
+  <br/>
+ 
+ 
+<!-- Fin Body !!! -->
+  
+<!-- Debut Footer !!! -->
+<ui:include src="footer.xhtml" />
+
+<!-- Fin Footer !!! -->
+</h:body>
+</html>

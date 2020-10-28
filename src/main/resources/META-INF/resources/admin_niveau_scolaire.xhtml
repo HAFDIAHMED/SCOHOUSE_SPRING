@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+
+
+	<link rel="stylesheet" type="text/css" href="resources/css/items.css"/>
+	
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+	<link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css?family=Days+One" rel="stylesheet"/>
+  <title> Niveau Scolaire Admin </title>
+</h:head>
+
+<h:body>
+
+
+<!-- Debut Body !!! -->
+<ui:include src="nav.xhtml" />
+
+	<p:growl id="messages" showDetail="false"/>
+	
+<h:form>
+
+  <p:dataTable  var="niveauScolaire" value="#{niveauScolaireView.niveauxScolaire}" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+  paginator="true"
+  rows="10"  >
+  
+    <p:column headerText="Id" style="text-align: center">
+      <h:outputText value="#{niveauScolaire.id}" />
+    </p:column>
+
+    <p:column headerText="nom" style="text-align: center">
+      <h:outputText value="#{niveauScolaire.nom}" />
+    </p:column>
+    
+    <p:column headerText="Niveau" style="text-align: center">
+      <h:outputText value="#{niveauView.nameById(niveauScolaire.niveau)}" />
+    </p:column>
+
+    <p:column headerText="Delete" style="text-align: center">
+    	<p:commandButton id="delete"  value="Delete" onclick="PF('deleteitemDialog').show()" icon="ui-icon-trash">
+	        <f:setPropertyActionListener value="#{niveauScolaire.id}" target="#{niveauScolaireView.selected}" />
+    	</p:commandButton>
+    </p:column>
+
+  </p:dataTable>
+ </h:form>
+  
+  <br/>
+  <br/>
+
+    <div align="center">
+          <p:commandButton id="add"  value="Nouveau Niveau Scolaire" onclick="PF('additemDialog').show()" icon="ui-icon-pencil" />
+    </div>
+    
+        <h:form id="additemForm">
+        <!-- Growl component -->
+        <p:growl id="messages" showDetail="false"/>
+        <p:dialog header="Nouveau Niveau Scolaire" widgetVar="additemDialog" height="430px" resizable="false">
+            <h:panelGrid columns="2" cellpadding="7">
+                
+                <p:outputLabel for="itemName" value="Nom : " />
+                <p:inputText id="itemName" value="#{niveauScolaireView.name}"/>
+                
+                <p:outputLabel  value="Niveau : " />
+                <p:selectOneMenu id="console" value="#{niveauScolaireView.niveau}" style="width:125px">
+                	<c:forEach var="niveau" items="#{niveauView.niveaux}">
+                		<f:selectItem itemLabel="#{niveau.nom}" itemValue="#{niveau.id}" />
+					</c:forEach>
+		        </p:selectOneMenu>
+                
+                <p:commandButton  value="OK" action="#{niveauScolaireView.add()}"  oncomplete="PF('additemDialog').hide()" icon="ui-icon-check"/>
+                <p:commandButton   value="Cancel" onclick="PF('additemDialog').hide()" icon="ui-icon-cancel"/>
+            </h:panelGrid>
+        </p:dialog>
+    </h:form>
+    
+    <h:form>
+      <p:dialog id="deleteItem" header="Delete Existing Item Amount" widgetVar="deleteitemDialog" height="50px" resizable="false">
+	  	<p:panelGrid columns="2" columnClasses="label,value">
+	    	<p:commandButton id="confirmDelete" value="OK" action="#{niveauScolaireView.delete()}" oncomplete="PF('deleteitemDialog').hide()"  icon="ui-icon-check"/>
+	        <p:commandButton id="cancelDelete" value="Cancel" onclick="PF('deleteitemDialog').hide()" icon="ui-icon-cancel"/>
+	    </p:panelGrid>
+	  </p:dialog>
+    </h:form>
+    
+  
+  
+  <br></br><br></br>
+  
+<!-- Fin Body !!! -->
+
+<ui:include src="footer.xhtml" />
+
+
+</h:body>
+</html>

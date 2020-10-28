@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:c="http://java.sun.com/jstl/core"
+  xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+  xmlns:p="http://primefaces.org/ui"
+  xmlns:ui="http://java.sun.com/jsf/facelets">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="img/favicon.png" type="image/png" />
+    <title>Courses Details</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css" />
+    <link rel="stylesheet" href="css/flaticon.css" />
+    <link rel="stylesheet" href="css/themify-icons.css" />
+    <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css" />
+    <link rel="stylesheet" href="vendors/nice-select/css/nice-select.css" />
+    <!-- main css -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!--================ Start Header Menu Area =================-->
+    <header class="header_area white-header">
+      <div class="main_menu">
+        <div class="search_input" id="search_input_box">
+          <div class="container">
+            <form class="d-flex justify-content-between" method="" action="">
+              <input
+                type="text"
+                class="form-control"
+                id="search_input"
+                placeholder="Search Here"
+              />
+              <button type="submit" class="btn"></button>
+              <span
+                class="ti-close"
+                id="close_search"
+                title="Close Search"
+              ></span>
+            </form>
+          </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <a class="navbar-brand" href="index.html">
+              <img class="logo-2" src="img/logo2.png" alt="" />
+            </a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="icon-bar"></span> <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <ui:include src="navHome.xhtml" />
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!--================ End Header Menu Area =================-->
+
+    <!--================Home Banner Area =================-->
+    <section class="banner_area">
+      <div class="banner_inner d-flex align-items-center">
+        <div class="overlay"></div>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-6">
+              <div class="banner_content text-center">
+                <h2>#{matiereView.nameById(matiereView.getPage())}</h2>
+                <div class="page_link">
+                  <a href="home.xhtml">Home</a>
+                  <a>#{niveauView.nameById(niveauScolaireView.niveauById(niveauScolaireView.getPage()))}</a>
+                  <a href="matiere.xhtml">#{niveauScolaireView.nameById(niveauScolaireView.getPage())}</a>
+                  <a>#{semestreView.nameById(matiereView.semestreById(matiereView.getPage()))}</a>
+                  <a href="cour.xhtml">#{matiereView.nameById(matiereView.getPage())}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================End Home Banner Area =================-->
+
+    <!--================ Start Course Details Area =================-->
+    <section class="course_details_area section_gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 course_details_left">
+                    <div class="main_image">
+                        <img class="img-fluid" src="img/courses/course-details.jpg" alt=""/>
+                    </div>
+                    <div class="content_wrapper">
+                    
+                        <h4 class="title">Course de la matiere :</h4>
+                        <div class="content">
+                            <ul class="course_list">
+                            	<c:forEach var="cour" items="#{courView.cours}">
+					            	<c:if test="#{matiereView.page.equals(cour.matiere)}">
+										<li class="justify-content-between d-flex">
+				            	            <p>#{cour.nom}</p>
+				            	            <c:if test="#{accountView.participant()}">
+					            	            <c:if test="#{!accountView.traitementPart()}">
+					            	            	<h:form>
+														<h:commandLink class="primary-btn text-uppercase" action="/seance.xhtml" value="Voir le cour">
+														<f:setPropertyActionListener value="#{cour.id}" target="#{courView.page}" />													</h:commandLink>
+							                      	</h:form>
+					            	            </c:if>
+							                    <c:if test="#{accountView.traitementPart()}">
+							                    	<h:form>
+														<h:commandLink class="primary-btn text-uppercase" action="#" value="Voir le cour">													</h:commandLink>
+						                      		</h:form>
+							                    </c:if>
+				            	            </c:if>
+				            	            <c:if test="#{!accountView.participant()}">
+					            	            <h:form>
+													<h:commandLink class="primary-btn text-uppercase" action="#" value="Voir le cour">													</h:commandLink>
+						                      	</h:form>
+				            	            </c:if>
+										</li>
+									</c:if>	
+								</c:forEach>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-4 right-contents">
+                    <ul>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Nom du professeur</p>
+                                <span class="or">#{accountView.nameById(matiereView.profById(matiereView.page))}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Prix de matiere</p>
+                                <span>#{matiereView.prixById(matiereView.page)} DH</span>
+                            </a>
+                        </li>
+                        <c:if test="#{!accountView.participant()}">
+                        <li>
+                            <a class="justify-content-between d-flex" href="#">
+                                <p>Etat de Participation</p>
+                                <span>Non Participant</span>
+                            </a>
+                        </li>
+	                	</c:if>
+                        <c:if test="#{accountView.participant()}">
+	                        <c:if test="#{accountView.traitementPart()}">
+		                        <li>
+		                            <a class="justify-content-between d-flex" href="#">
+		                                <p>Etat de Participation</p>
+		                                <span>Attente Validation de l'administrateur</span>
+		                            </a>
+		                        </li>
+		                	</c:if>
+		                	
+			                <c:if test="#{!accountView.traitementPart()}">
+		                        <li>
+		                            <a class="justify-content-between d-flex" href="#">
+		                                <p>Etat de Participation</p>
+		                                <span>Participant</span>
+		                            </a>
+		                        </li>
+		                	</c:if>
+
+	                	</c:if>
+
+                    </ul>
+	                <c:if test="#{!accountView.isLoggedin()}">
+					  <a href="index.xhtml" class="primary-btn2 text-uppercase enroll rounded-0 text-white">Connectez vous pour participer</a>
+	                </c:if>
+	                <c:if test="#{accountView.isLoggedin()}">
+	                	<c:if test="#{!accountView.participant()}">
+	                    <h:form>
+							<h:commandLink class="primary-btn2 text-uppercase enroll rounded-0 text-white" action="#{accountView.participer()}" value="Participer">													</h:commandLink>
+						</h:form>
+	                	</c:if>
+	                </c:if>	
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================ End Course Details Area =================-->
+
+    <!--================ Start footer Area  =================-->
+    <ui:include src="foot.xhtml" />
+          <!--================ End footer Area  =================-->
+      
+          <!-- Optional JavaScript -->
+          <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+          <script src="js/jquery-3.2.1.min.js"></script>
+          <script src="js/popper.js"></script>
+          <script src="js/bootstrap.min.js"></script>
+          <script src="vendors/nice-select/js/jquery.nice-select.min.js"></script>
+          <script src="vendors/owl-carousel/owl.carousel.min.js"></script>
+          <script src="js/owl-carousel-thumb.min.js"></script>
+          <script src="js/jquery.ajaxchimp.min.js"></script>
+          <script src="js/mail-script.js"></script>
+          <!--gmaps Js-->
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+          <script src="js/gmaps.min.js"></script>
+          <script src="js/theme.js"></script>
+        </body>
+      </html>

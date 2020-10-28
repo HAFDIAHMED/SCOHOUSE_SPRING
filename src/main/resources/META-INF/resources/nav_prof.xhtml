@@ -1,0 +1,29 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    
+    
+    <link rel="stylesheet" type="text/css" href="resources/css/items.css"/>
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+	<link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css?family=Days+One" rel="stylesheet"/>
+	
+	
+	<f:metadata>
+  		<f:event listener="#{accountView.espaceProf()}" type="preRenderView"></f:event>
+  	</f:metadata>
+	
+	<ul class="topnav">
+  <li><h:form><h:commandLink value="Home" action = "#{DBFView.redirect('home.xhtml')}" styleClass= "active"></h:commandLink></h:form></li>	
+  <li><h:form><h:commandLink value="Gestion files" action = "#{DBFView.redirect('upload_prof.xhtml')}"></h:commandLink></h:form></li> 
+
+  <li><h:form><h:commandLink value="Gestion Cours" action = "#{DBFView.redirect('prof_cour.xhtml')}"></h:commandLink></h:form></li>  
+  <li><h:form><h:commandLink value="Gestion Seances" action = "#{DBFView.redirect('prof_seance.xhtml')}"></h:commandLink></h:form></li>
+ 
+  
+</ul>
+
+</ui:composition>

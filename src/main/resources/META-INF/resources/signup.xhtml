@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"  
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+<head>
+	<link rel="stylesheet" type="text/css" href="resources/css/login.css"/>
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css?family=Merriweather+Sans" rel="stylesheet"/>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+  <title>Registrer</title>
+  
+	
+</head>
+
+<body>
+<center>
+	
+<h1 style="font-family: 'Merriweather Sans', sans-serif;color:#d61721;">S'inscrire</h1>
+</center>
+<f:facet name="first">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    </f:facet>
+<div id="login">
+	<h:form>
+		<table style="width:100%">
+		
+			<tr><td colspan="2">
+				<span class="fontawesome-user"></span>
+				<h:inputText value = "#{accountView.nom}" id = "nom" a:placeholder="Nom" required="true" requiredMessage="Nom is required" validatorMessage="Only Aplhanumeric Characters and [points,dashes,underscores] with total length >= 3 are allowed for username"></h:inputText>
+			</td></tr>
+			
+			<tr><td colspan="2">
+				<span class="fontawesome-user"></span>
+				<h:inputText value = "#{accountView.prenom}" id = "prenom" a:placeholder="Prenom" required="true" requiredMessage="Prenom is required" validatorMessage="Only Aplhanumeric Characters and [points,dashes,underscores] with total length >= 3 are allowed for username"></h:inputText>
+			</td></tr>
+			
+			<tr><td colspan="2">
+				<span class="fontawesome-envelope"></span>
+				<h:inputText value = "#{accountView.email}" id = "user" a:placeholder="Email" required="true" requiredMessage="Email is required" validatorMessage="Only Aplhanumeric Characters and [points,dashes,underscores] with total length >= 3 are allowed for username"></h:inputText>
+			</td></tr>
+			
+			<tr><td colspan="2">
+				<span class="fontawesome-phone"></span>
+				<h:inputText value = "#{accountView.phone}" id = "phone" a:placeholder="Telephone" required="true" requiredMessage="Telephone is required" validatorMessage="Only Aplhanumeric Characters and [points,dashes,underscores] with total length >= 3 are allowed for username"></h:inputText>
+			</td></tr>
+			
+			<tr><td colspan="2">
+				<span class="fontawesome-lock"></span>
+				<h:inputSecret value = "#{accountView.password}" id="pass" a:placeholder="Mot de passe" required="true" requiredMessage="Password is required"/>
+			</td></tr>
+			
+			<tr><td colspan="2">
+				<span class="fontawesome-lock"></span>
+				<h:inputSecret value = "#{accountView.repassword}" id="pass2" a:placeholder="Re-enter mot de passe" required="true" requiredMessage="Re-enter Password is required"/>
+			</td></tr>
+			
+			<tr><td colspan="2">
+				<h:selectOneRadio value = "#{accountView.type}" style="width:100%; height:100%;color: white;" required="true" requiredMessage="Type de compte is required"> 
+				   <f:selectItem itemValue = "etudiant" itemLabel = "Etudiant" /> 
+				   <f:selectItem itemValue = "professeur" itemLabel = "Professeur" />
+				</h:selectOneRadio>  
+			</td></tr>
+			
+		</table>
+			
+				
+			<br/><br/>
+			<h:commandButton action = "#{accountView.signup()}" value = "S'inscire" style="font-weight: bold;"/>
+			
+			
+		
+		<p style="color:red">
+			#{accountView.errorMessage}
+			
+			</p>
+	</h:form>
+	<p style="text-align:center;font-size:16px;font-family:'Ubuntu', sans-serif;" >Have an Account?<h:link value = "Login" outcome = "index" /></p>
+	<h:messages style="color:red;margin:8px;" /> 
+	<h:messages globalOnly="true" style="color:green;margin:8px;"/>
+</div>
+
+</body>
+
+</html>
